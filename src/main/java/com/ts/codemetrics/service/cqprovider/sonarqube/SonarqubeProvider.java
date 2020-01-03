@@ -20,6 +20,7 @@ public class SonarqubeProvider implements QualityGatewayProvider {
 
     private static final String TASK_URL = "api/ce/task?id=%s";
     private static final String PROJECT_METRICS = "api/measures/search_history";
+    private static final String PROJECT_ANALYSIS = "api/project_analyses/search?project=%s&category=VERSION";
     private static final Logger LOGGER = LoggerFactory.getLogger(SonarqubeProvider.class);
 
     private WebClient getClient(String url, String uname, String pwd) {
@@ -36,17 +37,38 @@ public class SonarqubeProvider implements QualityGatewayProvider {
     @Override
     public Mono<QualityGatewayScanResult> getCodeQualityMetrics(ScanInfoRequest scanInfoRequest) {
         return getScanDetails(scanInfoRequest);
-//        if(scanInfoRequest != null){
-//            Mono<ScanInfo> scandetails = getScanDetails(scanInfoRequest)
-//                    .map(x->{
-//            });
-//        }
-//        return Mono.just(new  QualityGatewayScanResult());
+
     }
 
     @Override
     public String providerName() {
         return "SONARQUBE";
+    }
+
+    private Mono<QualityGatewayScanResult> getSonarHistory(ScanInfoRequest scanInfoRequest, ScanInfo scanInfo){
+        WebClient webClient = getClient(scanInfoRequest.getCqUrl(),
+                scanInfoRequest.getUid(), scanInfoRequest.getPwd());
+        Mono<QualityGatewayScanResult> result = webClient.get()
+                .uri(String.format(PROJECT_ANALYSIS, scanInfo.getComponentKey()))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> {
+                    LOGGER.error(clientResponse.toString());
+                    return Mono.empty();
+                })
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> {
+                    LOGGER.error(clientResponse.toString());
+                    return Mono.empty();
+                }).bodyToMono(SonarAnalysisResponse.class)
+                .flatMap(x->{
+                  Optional<SonarAnalysis> sonarAnalysis =  x.getAnalyses().stream().filter(m->
+                        m.getKey().equals(scanInfo.getAnalysisId())).findFirst();
+                  if(sonarAnalysis.isPresent()){
+                      scanInfo.setSubmittedAt(sonarAnalysis.get().getDate());
+                  }
+                    return getQualityGatewayScanResult(scanInfoRequest, scanInfo);
+                });
+        return result;
     }
 
     private Mono<QualityGatewayScanResult> getScanDetails(ScanInfoRequest scanInfoRequest) {
@@ -64,7 +86,7 @@ public class SonarqubeProvider implements QualityGatewayProvider {
                     return Mono.empty();
                 }).bodyToMono(SonarTaskResult.class)
                 .flatMap(x->{
-                   return getQualityGatewayScanResult(scanInfoRequest, x.getTask());
+                   return getSonarHistory(scanInfoRequest, x.getTask());
                 });
         return scanInfo;
     }

@@ -63,6 +63,7 @@ public class JobMetricServiceImpl implements JobMetricService {
                         ModelMapper modelMapper = new ModelMapper();
                         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
                         modelMapper.map(m, codeQualityMetric);
+                        codeQualityMetric.setJobMetric(new JobMetric(){{setId(codeMetricModel.getId());}});
                         codeQualityMetricRepository.save(codeQualityMetric);
                     });
         }
