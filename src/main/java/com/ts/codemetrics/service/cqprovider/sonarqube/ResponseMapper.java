@@ -13,6 +13,8 @@ public class ResponseMapper {
         if (Objects.nonNull(sonarScanResult) && !CollectionUtils.isEmpty(sonarScanResult.getMeasures())) {
             QualityGatewayScanResult qualityGatewayScanResult = new QualityGatewayScanResult();
             HashMap<String, Object> sonarMetrics = extractSonarValues(sonarScanResult.getMeasures());
+            qualityGatewayScanResult.setComplexity(parseInteger(getValueByKey(sonarMetrics, SonarMetricDefinition.COMPLEXITY)));
+            qualityGatewayScanResult.setCognitiveComplexity(parseInteger(getValueByKey(sonarMetrics, SonarMetricDefinition.COGNITIVE_COMPLEXITY)));
             qualityGatewayScanResult.setViolations(parseInteger(getValueByKey(sonarMetrics, SonarMetricDefinition.VIOLATIONS)));
             qualityGatewayScanResult.setNewViolations(parseInteger(getValueByKey(sonarMetrics, SonarMetricDefinition.NEW_VIOLATIONS)));
             qualityGatewayScanResult.setOpenIssues(parseInteger(getValueByKey(sonarMetrics, SonarMetricDefinition.OPEN_ISSUES)));

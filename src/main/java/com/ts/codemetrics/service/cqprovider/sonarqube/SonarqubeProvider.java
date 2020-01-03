@@ -98,7 +98,7 @@ public class SonarqubeProvider implements QualityGatewayProvider {
         String metrics = String.join(",", SonarMetricDefinition.sonarMetrics);
         Mono<QualityGatewayScanResult> scanInfo = webClient.get()
                         .uri(uriBuilder -> uriBuilder.path(PROJECT_METRICS)
-                        .queryParam("metrics", "ncloc,complexity,violations,code_smells,sqale_index,sqale_debt_ratio")
+                        .queryParam("metrics", metrics)
                         .queryParam("component", scanResponse.getComponentKey())
                         .queryParam("from", scanResponse.getSubmittedAt().replace("+","%2b"))
                         .build())

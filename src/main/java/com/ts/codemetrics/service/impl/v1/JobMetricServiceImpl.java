@@ -15,6 +15,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -64,6 +65,7 @@ public class JobMetricServiceImpl implements JobMetricService {
                         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
                         modelMapper.map(m, codeQualityMetric);
                         codeQualityMetric.setJobMetric(new JobMetric(){{setId(codeMetricModel.getId());}});
+                        codeQualityMetric.setCreatedDate(new Date());
                         codeQualityMetricRepository.save(codeQualityMetric);
                     });
         }

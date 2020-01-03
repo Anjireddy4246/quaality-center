@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 
 @Data
 public class QualityGatewayScanResult {
+    private Integer complexity;
+    private Integer cognitiveComplexity;
     private Integer violations;
     private Integer newViolations;
     private Integer openIssues;
