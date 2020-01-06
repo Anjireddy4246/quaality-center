@@ -21,4 +21,6 @@ public class CodeMetricModel {
     private Date jobEndedAt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date scanDate;
+    private String userName;
+    private String userEmailId;
 }

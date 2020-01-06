@@ -72,9 +72,8 @@ public class JobMetricServiceImpl implements JobMetricService {
     }
 
     private void getQualityGatewayScanDetails(CodeMetricModel codeMetricModel) {
-        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-                triggerCodeQualityJob(codeMetricModel);
-        });
+        CompletableFuture<Void> future = CompletableFuture.runAsync(() ->
+                triggerCodeQualityJob(codeMetricModel));
     }
 
     private ScanInfoRequest constructScanInfoRequest(CodeMetricModel codeMetricModel){

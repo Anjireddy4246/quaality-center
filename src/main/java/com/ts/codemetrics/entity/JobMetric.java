@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "JobMetric")
 public class JobMetric implements java.io.Serializable {
+
 	private Long id;
 	private Account account;
 	private String jobName;
@@ -38,6 +39,8 @@ public class JobMetric implements java.io.Serializable {
 	private Date jobStartedAt;
 	private Date jobEndedAt;
 	private String changedFiles;
+	private String userName;
+	private String userEmailId;
 	private Set<CodeQualityMetric> codeQualityMetrics = new HashSet<CodeQualityMetric>(0);
 
 	public JobMetric() {
@@ -45,7 +48,8 @@ public class JobMetric implements java.io.Serializable {
 
 	public JobMetric(Account account, String jobName, String projectName, String branchName, String buildNumber,
 					 String commitId, String cqTaskId, String cqAnalysisId, String cqStatusUrl, String jobStatus, Date runDate,
-					 Date jobStartedAt, Date jobEndedAt, String changedFiles, Set<CodeQualityMetric> codeQualityMetrics) {
+					 Date jobStartedAt, Date jobEndedAt, String changedFiles, String userName, String userEmailId,
+					 Set<CodeQualityMetric> codeQualityMetrics) {
 		this.account = account;
 		this.jobName = jobName;
 		this.projectName = projectName;
@@ -60,6 +64,8 @@ public class JobMetric implements java.io.Serializable {
 		this.jobStartedAt = jobStartedAt;
 		this.jobEndedAt = jobEndedAt;
 		this.changedFiles = changedFiles;
+		this.userName = userName;
+		this.userEmailId = userEmailId;
 		this.codeQualityMetrics = codeQualityMetrics;
 	}
 
@@ -196,13 +202,31 @@ public class JobMetric implements java.io.Serializable {
 		this.jobEndedAt = jobEndedAt;
 	}
 
-	@Column(name = "changedFiles", length = 5000)
+	@Column(name = "ChangedFiles", length = 5000)
 	public String getChangedFiles() {
 		return this.changedFiles;
 	}
 
 	public void setChangedFiles(String changedFiles) {
 		this.changedFiles = changedFiles;
+	}
+
+	@Column(name = "UserName", length = 100)
+	public String getUserName() {
+		return this.userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@Column(name = "UserEmailId", length = 500)
+	public String getUserEmailId() {
+		return this.userEmailId;
+	}
+
+	public void setUserEmailId(String userEmailId) {
+		this.userEmailId = userEmailId;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "jobMetric")
@@ -213,4 +237,5 @@ public class JobMetric implements java.io.Serializable {
 	public void setCodeQualityMetrics(Set<CodeQualityMetric> codeQualityMetrics) {
 		this.codeQualityMetrics = codeQualityMetrics;
 	}
+
 }
