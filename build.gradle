@@ -16,6 +16,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url "https://maven.atlassian.com/repository/public" }
 }
 
 ext {
@@ -43,6 +44,9 @@ dependencies {
 	compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.11'
 	// https://mvnrepository.com/artifact/log4j/log4j
 	compile group: 'log4j', name: 'log4j', version: '1.2.17'
+
+	compile('com.atlassian.jira:jira-rest-java-client-core:4.0.0')
+	compile('com.atlassian.fugue:fugue:2.6.1')
 
 	testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 	testCompile('log4j:log4j:1.2.17')

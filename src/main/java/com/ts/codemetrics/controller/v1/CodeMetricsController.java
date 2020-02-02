@@ -1,10 +1,10 @@
 package com.ts.codemetrics.controller.v1;
 
 
-import com.ts.codemetrics.service.cqprovider.CQProviderFactory;
-import com.ts.codemetrics.service.cqprovider.QualityGatewayProvider;
-import com.ts.codemetrics.service.cqprovider.model.QualityGatewayScanResult;
-import com.ts.codemetrics.service.cqprovider.model.ScanInfoRequest;
+import com.ts.codemetrics.service.provider.cqprovider.CQProviderFactory;
+import com.ts.codemetrics.service.provider.cqprovider.QualityGatewayProvider;
+import com.ts.codemetrics.service.provider.cqprovider.model.QualityGatewayScanResult;
+import com.ts.codemetrics.service.provider.cqprovider.model.ScanInfoRequest;
 import com.ts.codemetrics.model.v1.CodeMetricModel;
 import com.ts.codemetrics.service.impl.v1.JobMetricServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

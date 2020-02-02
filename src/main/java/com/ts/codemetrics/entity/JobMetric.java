@@ -1,5 +1,5 @@
 package com.ts.codemetrics.entity;
-// Generated 3 Jan, 2020 1:55:17 PM by Hibernate Tools 5.1.10.Final
+// Generated 31 Jan, 2020 1:28:08 PM by Hibernate Tools 5.1.10.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -47,9 +47,9 @@ public class JobMetric implements java.io.Serializable {
 	}
 
 	public JobMetric(Account account, String jobName, String projectName, String branchName, String buildNumber,
-					 String commitId, String cqTaskId, String cqAnalysisId, String cqStatusUrl, String jobStatus, Date runDate,
-					 Date jobStartedAt, Date jobEndedAt, String changedFiles, String userName, String userEmailId,
-					 Set<CodeQualityMetric> codeQualityMetrics) {
+			String commitId, String cqTaskId, String cqAnalysisId, String cqStatusUrl, String jobStatus, Date runDate,
+			Date jobStartedAt, Date jobEndedAt, String changedFiles, String userName, String userEmailId,
+			Set<CodeQualityMetric> codeQualityMetrics) {
 		this.account = account;
 		this.jobName = jobName;
 		this.projectName = projectName;

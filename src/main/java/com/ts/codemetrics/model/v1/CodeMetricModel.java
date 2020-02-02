@@ -12,6 +12,7 @@ public class CodeMetricModel {
     private String buildNumber;
     private String cqTaskId;
     private String commitId;
+    private String checkInComments;
     private String cqStatusUrl;
     private String jobStatus;
     private String changedFiles;
