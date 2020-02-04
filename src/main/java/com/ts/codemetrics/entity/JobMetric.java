@@ -1,9 +1,7 @@
 package com.ts.codemetrics.entity;
-// Generated 31 Jan, 2020 1:28:08 PM by Hibernate Tools 5.1.10.Final
+// Generated 4 Feb, 2020 6:45:49 PM by Hibernate Tools 5.1.10.Final
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +10,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,7 +38,8 @@ public class JobMetric implements java.io.Serializable {
 	private String changedFiles;
 	private String userName;
 	private String userEmailId;
-	private Set<CodeQualityMetric> codeQualityMetrics = new HashSet<CodeQualityMetric>(0);
+	private String commitMsg;
+	private String itemCode;
 
 	public JobMetric() {
 	}
@@ -49,7 +47,7 @@ public class JobMetric implements java.io.Serializable {
 	public JobMetric(Account account, String jobName, String projectName, String branchName, String buildNumber,
 			String commitId, String cqTaskId, String cqAnalysisId, String cqStatusUrl, String jobStatus, Date runDate,
 			Date jobStartedAt, Date jobEndedAt, String changedFiles, String userName, String userEmailId,
-			Set<CodeQualityMetric> codeQualityMetrics) {
+			String commitMsg, String itemCode) {
 		this.account = account;
 		this.jobName = jobName;
 		this.projectName = projectName;
@@ -66,7 +64,8 @@ public class JobMetric implements java.io.Serializable {
 		this.changedFiles = changedFiles;
 		this.userName = userName;
 		this.userEmailId = userEmailId;
-		this.codeQualityMetrics = codeQualityMetrics;
+		this.commitMsg = commitMsg;
+		this.itemCode = itemCode;
 	}
 
 	@Id
@@ -229,13 +228,22 @@ public class JobMetric implements java.io.Serializable {
 		this.userEmailId = userEmailId;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "jobMetric")
-	public Set<CodeQualityMetric> getCodeQualityMetrics() {
-		return this.codeQualityMetrics;
+	@Column(name = "CommitMsg", length = 5000)
+	public String getCommitMsg() {
+		return this.commitMsg;
 	}
 
-	public void setCodeQualityMetrics(Set<CodeQualityMetric> codeQualityMetrics) {
-		this.codeQualityMetrics = codeQualityMetrics;
+	public void setCommitMsg(String commitMsg) {
+		this.commitMsg = commitMsg;
+	}
+
+	@Column(name = "ItemCode", length = 100)
+	public String getItemCode() {
+		return this.itemCode;
+	}
+
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
 	}
 
 }

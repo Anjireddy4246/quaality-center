@@ -1,5 +1,5 @@
 package com.ts.codemetrics.entity;
-// Generated 31 Jan, 2020 1:28:08 PM by Hibernate Tools 5.1.10.Final
+// Generated 4 Feb, 2020 6:45:49 PM by Hibernate Tools 5.1.10.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,21 +23,16 @@ public class Account implements java.io.Serializable {
 	private String name;
 	private String code;
 	private String uuid;
-	private Set<Project> projects = new HashSet<Project>(0);
 	private Set<JobMetric> jobMetrics = new HashSet<JobMetric>(0);
-	private Set<Cqconfig> cqconfigs = new HashSet<Cqconfig>(0);
 
 	public Account() {
 	}
 
-	public Account(String name, String code, String uuid, Set<Project> projects, Set<JobMetric> jobMetrics,
-			Set<Cqconfig> cqconfigs) {
+	public Account(String name, String code, String uuid, Set<JobMetric> jobMetrics) {
 		this.name = name;
 		this.code = code;
 		this.uuid = uuid;
-		this.projects = projects;
 		this.jobMetrics = jobMetrics;
-		this.cqconfigs = cqconfigs;
 	}
 
 	@Id
@@ -80,30 +75,12 @@ public class Account implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
-	public Set<Project> getProjects() {
-		return this.projects;
-	}
-
-	public void setProjects(Set<Project> projects) {
-		this.projects = projects;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
 	public Set<JobMetric> getJobMetrics() {
 		return this.jobMetrics;
 	}
 
 	public void setJobMetrics(Set<JobMetric> jobMetrics) {
 		this.jobMetrics = jobMetrics;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
-	public Set<Cqconfig> getCqconfigs() {
-		return this.cqconfigs;
-	}
-
-	public void setCqconfigs(Set<Cqconfig> cqconfigs) {
-		this.cqconfigs = cqconfigs;
 	}
 
 }

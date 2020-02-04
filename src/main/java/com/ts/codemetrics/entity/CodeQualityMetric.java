@@ -1,16 +1,13 @@
 package com.ts.codemetrics.entity;
-// Generated 31 Jan, 2020 1:28:08 PM by Hibernate Tools 5.1.10.Final
+// Generated 4 Feb, 2020 6:45:49 PM by Hibernate Tools 5.1.10.Final
 
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,7 +20,7 @@ import javax.persistence.TemporalType;
 public class CodeQualityMetric implements java.io.Serializable {
 
 	private Long id;
-	private JobMetric jobMetric;
+	private Long jobMetricId;
 	private Integer complexity;
 	private Integer cognitiveComplexity;
 	private Integer violations;
@@ -55,7 +52,7 @@ public class CodeQualityMetric implements java.io.Serializable {
 	public CodeQualityMetric() {
 	}
 
-	public CodeQualityMetric(JobMetric jobMetric, Integer complexity, Integer cognitiveComplexity, Integer violations,
+	public CodeQualityMetric(Long jobMetricId, Integer complexity, Integer cognitiveComplexity, Integer violations,
 			Integer newViolations, Integer openIssues, Integer codeSmells, Integer newCodeSmells,
 			String maintainabilityRating, BigDecimal technicalDebt, BigDecimal newTechnicalDebt,
 			BigDecimal technicalDebtRatio, Integer newTechnicalDebtRatio, String qualityGatewayStatus, Integer bugs,
@@ -63,7 +60,7 @@ public class CodeQualityMetric implements java.io.Serializable {
 			String securityRating, Long linesofCode, BigDecimal codeCoverage, BigDecimal newCodeCoverage,
 			Integer noofUnitTest, Integer noofUnitTestsFailed, Integer noofUnitTestsPassed,
 			BigDecimal unitTestSuccessDensity, Date createdDate) {
-		this.jobMetric = jobMetric;
+		this.jobMetricId = jobMetricId;
 		this.complexity = complexity;
 		this.cognitiveComplexity = cognitiveComplexity;
 		this.violations = violations;
@@ -105,14 +102,13 @@ public class CodeQualityMetric implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "JobMetricId")
-	public JobMetric getJobMetric() {
-		return this.jobMetric;
+	@Column(name = "JobMetricId")
+	public Long getJobMetricId() {
+		return this.jobMetricId;
 	}
 
-	public void setJobMetric(JobMetric jobMetric) {
-		this.jobMetric = jobMetric;
+	public void setJobMetricId(Long jobMetricId) {
+		this.jobMetricId = jobMetricId;
 	}
 
 	@Column(name = "Complexity")

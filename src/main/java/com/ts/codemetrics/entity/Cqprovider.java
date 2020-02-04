@@ -1,15 +1,11 @@
 package com.ts.codemetrics.entity;
-// Generated 31 Jan, 2020 1:28:08 PM by Hibernate Tools 5.1.10.Final
+// Generated 4 Feb, 2020 6:45:49 PM by Hibernate Tools 5.1.10.Final
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -23,16 +19,14 @@ public class Cqprovider implements java.io.Serializable {
 	private String name;
 	private String description;
 	private String url;
-	private Set<Cqconfig> cqconfigs = new HashSet<Cqconfig>(0);
 
 	public Cqprovider() {
 	}
 
-	public Cqprovider(String name, String description, String url, Set<Cqconfig> cqconfigs) {
+	public Cqprovider(String name, String description, String url) {
 		this.name = name;
 		this.description = description;
 		this.url = url;
-		this.cqconfigs = cqconfigs;
 	}
 
 	@Id
@@ -72,15 +66,6 @@ public class Cqprovider implements java.io.Serializable {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cqprovider")
-	public Set<Cqconfig> getCqconfigs() {
-		return this.cqconfigs;
-	}
-
-	public void setCqconfigs(Set<Cqconfig> cqconfigs) {
-		this.cqconfigs = cqconfigs;
 	}
 
 }

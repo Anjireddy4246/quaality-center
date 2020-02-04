@@ -1,5 +1,8 @@
 package com.ts.codemetrics.entity;
-// Generated 31 Jan, 2020 1:28:08 PM by Hibernate Tools 5.1.10.Final
+// Generated 4 Feb, 2020 6:45:49 PM by Hibernate Tools 5.1.10.Final
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -136,8 +139,9 @@ public class ProjectMgtToolConfig implements java.io.Serializable {
 		this.rowstatusId = rowstatusId;
 	}
 
+	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CreatedDate", length = 19)
+	@Column(name = "CreatedDate", length = 19, updatable = false)
 	public Date getCreatedDate() {
 		return this.createdDate;
 	}
@@ -155,6 +159,7 @@ public class ProjectMgtToolConfig implements java.io.Serializable {
 		this.createdBy = createdBy;
 	}
 
+	@UpdateTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "UpdatedDate", length = 19)
 	public Date getUpdatedDate() {

@@ -1,5 +1,5 @@
 package com.ts.codemetrics.entity;
-// Generated 31 Jan, 2020 1:49:23 PM by Hibernate Tools 5.1.10.Final
+// Generated 4 Feb, 2020 6:45:49 PM by Hibernate Tools 5.1.10.Final
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -35,20 +35,23 @@ public class ReleaseItem implements java.io.Serializable {
 	private String releaseNumber;
 	private Date lastSyncedOn;
 	private String jsonResponse;
+	private String assignedTo;
+	private String reportedBy;
 	private Integer rowStatusId;
 	private String createdBy;
 	private Date createdDate;
 	private String updatedBy;
-	@UpdateTimestamp
 	private Date updatedDate;
+	private Boolean includeInReleaseNote;
 
 	public ReleaseItem() {
 	}
 
 	public ReleaseItem(String itemCode, String title, String description, Integer itemType, Long projectId,
-					   Integer severity, Integer priority, String status, String affectedVersion, String fixedVersion,
-					   String releaseNumber, Date lastSyncedOn, String jsonResponse, Integer rowStatusId, String createdBy,
-					   Date createdDate, String updatedBy, Date updatedDate) {
+			Integer severity, Integer priority, String status, String affectedVersion, String fixedVersion,
+			String releaseNumber, Date lastSyncedOn, String jsonResponse, String assignedTo, String reportedBy,
+			Integer rowStatusId, String createdBy, Date createdDate, String updatedBy, Date updatedDate,
+			Boolean includeInReleaseNote) {
 		this.itemCode = itemCode;
 		this.title = title;
 		this.description = description;
@@ -62,11 +65,14 @@ public class ReleaseItem implements java.io.Serializable {
 		this.releaseNumber = releaseNumber;
 		this.lastSyncedOn = lastSyncedOn;
 		this.jsonResponse = jsonResponse;
+		this.assignedTo = assignedTo;
+		this.reportedBy = reportedBy;
 		this.rowStatusId = rowStatusId;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 		this.updatedBy = updatedBy;
 		this.updatedDate = updatedDate;
+		this.includeInReleaseNote = includeInReleaseNote;
 	}
 
 	@Id
@@ -190,13 +196,31 @@ public class ReleaseItem implements java.io.Serializable {
 		this.lastSyncedOn = lastSyncedOn;
 	}
 
-	@Column(name = "JsonResponse", length = 65535)
+	@Column(name = "JsonResponse")
 	public String getJsonResponse() {
 		return this.jsonResponse;
 	}
 
 	public void setJsonResponse(String jsonResponse) {
 		this.jsonResponse = jsonResponse;
+	}
+
+	@Column(name = "AssignedTo", length = 1000)
+	public String getAssignedTo() {
+		return this.assignedTo;
+	}
+
+	public void setAssignedTo(String assignedTo) {
+		this.assignedTo = assignedTo;
+	}
+
+	@Column(name = "ReportedBy", length = 1000)
+	public String getReportedBy() {
+		return this.reportedBy;
+	}
+
+	public void setReportedBy(String reportedBy) {
+		this.reportedBy = reportedBy;
 	}
 
 	@Column(name = "RowStatusId")
@@ -219,7 +243,7 @@ public class ReleaseItem implements java.io.Serializable {
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CreatedDate", length = 19,updatable = false)
+	@Column(name = "CreatedDate", length = 19, updatable = false)
 	public Date getCreatedDate() {
 		return this.createdDate;
 	}
@@ -227,7 +251,6 @@ public class ReleaseItem implements java.io.Serializable {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-
 
 	@Column(name = "UpdatedBy", length = 100)
 	public String getUpdatedBy() {
@@ -247,6 +270,15 @@ public class ReleaseItem implements java.io.Serializable {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	@Column(name = "IncludeInReleaseNote")
+	public Boolean getIncludeInReleaseNote() {
+		return this.includeInReleaseNote;
+	}
+
+	public void setIncludeInReleaseNote(Boolean includeInReleaseNote) {
+		this.includeInReleaseNote = includeInReleaseNote;
 	}
 
 }

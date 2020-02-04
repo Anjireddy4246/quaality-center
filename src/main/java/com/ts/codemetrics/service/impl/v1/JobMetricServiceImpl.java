@@ -3,6 +3,7 @@ package com.ts.codemetrics.service.impl.v1;
 import com.ts.codemetrics.entity.Account;
 import com.ts.codemetrics.entity.CodeQualityMetric;
 import com.ts.codemetrics.entity.JobMetric;
+import com.ts.codemetrics.model.v1.CQConfigModel;
 import com.ts.codemetrics.model.v1.CodeMetricModel;
 import com.ts.codemetrics.model.v1.PMToolConfigModel;
 import com.ts.codemetrics.model.v1.ReleaseItemModel;
@@ -13,6 +14,7 @@ import com.ts.codemetrics.service.provider.cqprovider.QualityGatewayProvider;
 import com.ts.codemetrics.service.provider.cqprovider.model.ScanInfoRequest;
 import com.ts.codemetrics.service.provider.pmprovider.PMToolProvider;
 import com.ts.codemetrics.service.provider.pmprovider.PMToolProviderFactory;
+import com.ts.codemetrics.service.v1.CQConfigService;
 import com.ts.codemetrics.service.v1.JobMetricService;
 import com.ts.codemetrics.service.v1.PMToolConfigService;
 import com.ts.codemetrics.service.v1.ReleaseItemService;
@@ -46,6 +48,9 @@ public class JobMetricServiceImpl implements JobMetricService {
     private ReleaseItemService releaseItemService;
 
     @Autowired
+    private CQConfigService cqConfigService;
+
+    @Autowired
     private PMToolProviderFactory pmToolProviderFactory;
 
     @Override
@@ -67,6 +72,7 @@ public class JobMetricServiceImpl implements JobMetricService {
         jobMetric.setAccount(new Account() {{
             setId(1);
         }});
+        jobMetric.setItemCode(extractWorkItemCodeFromComments(codeMetricModel.getCheckInComments()));
         jobMetric = jobMetricRepository.save(jobMetric);
         codeMetricModel.setId(jobMetric.getId());
         getQualityGatewayScanDetails(codeMetricModel);
@@ -77,18 +83,20 @@ public class JobMetricServiceImpl implements JobMetricService {
     private void triggerCodeQualityJob(CodeMetricModel codeMetricModel) {
         QualityGatewayProvider qualityGatewayProvider = cqProviderFactory.getProvider("SONARQUBE");
         if (qualityGatewayProvider != null) {
-            qualityGatewayProvider.getCodeQualityMetrics(constructScanInfoRequest(codeMetricModel))
-                    .subscribe(m -> {
-                        CodeQualityMetric codeQualityMetric = new CodeQualityMetric();
-                        ModelMapper modelMapper = new ModelMapper();
-                        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-                        modelMapper.map(m, codeQualityMetric);
-                        codeQualityMetric.setJobMetric(new JobMetric() {{
-                            setId(codeMetricModel.getId());
-                        }});
-                        codeQualityMetric.setCreatedDate(new Date());
-                        codeQualityMetricRepository.save(codeQualityMetric);
-                    });
+            Optional<CQConfigModel> cqConfigModel = this.cqConfigService.getCQConfigByJobName(codeMetricModel.getJobName());
+            if(cqConfigModel.isPresent()){
+                qualityGatewayProvider.getCodeQualityMetrics(constructScanInfoRequest(codeMetricModel,cqConfigModel.get()))
+                        .subscribe(m -> {
+                            CodeQualityMetric codeQualityMetric = new CodeQualityMetric();
+                            ModelMapper modelMapper = new ModelMapper();
+                            modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+                            modelMapper.map(m, codeQualityMetric);
+                            codeQualityMetric.setJobMetricId(codeMetricModel.getId());
+                            codeQualityMetric.setCreatedDate(new Date());
+                            codeQualityMetricRepository.save(codeQualityMetric);
+                        });
+            }
+
         }
     }
 
@@ -99,12 +107,7 @@ public class JobMetricServiceImpl implements JobMetricService {
 
     private void syncCheckInItemDetails(CodeMetricModel codeMetricModel) {
         if (Objects.nonNull(codeMetricModel) && StringUtils.isNotBlank(codeMetricModel.getCheckInComments())) {
-            String comment = codeMetricModel.getCheckInComments();
-            String workItemId = "";
-            String[] commentsDetails = comment.split(" ");
-            if (commentsDetails != null && commentsDetails.length > 0) {
-                workItemId = commentsDetails[0];
-            }
+            String workItemId = extractWorkItemCodeFromComments(codeMetricModel.getCheckInComments());
             if (StringUtils.isNotEmpty(workItemId)) {
                 Optional<PMToolConfigModel> pmToolConfigModel =
                         pmToolConfigService.getConfigByProjectCode(codeMetricModel.getJobName());
@@ -112,18 +115,32 @@ public class JobMetricServiceImpl implements JobMetricService {
                     PMToolProvider pmToolProvider = pmToolProviderFactory.getProvider(pmToolConfigModel.get().getName());
                     ReleaseItemModel releaseItemModel =
                             pmToolProvider.getIssue(pmToolConfigModel.get(), workItemId);
+                    if(Objects.nonNull(releaseItemModel)){
+                        releaseItemModel.setProjectId(pmToolConfigModel.get().getProjectId());
+                    }
                     releaseItemService.create(releaseItemModel);
                 }
             }
         }
     }
 
+    private String extractWorkItemCodeFromComments(String comment){
+        String workItemCode = "";
+        if(StringUtils.isNotBlank(comment)){
+            String[] commentsDetails = comment.split(" ");
+            if (commentsDetails != null && commentsDetails.length > 0) {
+                workItemCode = commentsDetails[0];
+            }
+        }
+        return workItemCode;
+    }
 
-    private ScanInfoRequest constructScanInfoRequest(CodeMetricModel codeMetricModel) {
+
+    private ScanInfoRequest constructScanInfoRequest(CodeMetricModel codeMetricModel, CQConfigModel cqConfigModel) {
         ScanInfoRequest scanInfoRequest = new ScanInfoRequest();
-        scanInfoRequest.setCqUrl("https://codequality.technosoftcorp.net/");
-        scanInfoRequest.setUid("admin");
-        scanInfoRequest.setPwd("bitnami");
+        scanInfoRequest.setCqUrl(cqConfigModel.getUrl());
+        scanInfoRequest.setUid(cqConfigModel.getUserId());
+        scanInfoRequest.setPwd(cqConfigModel.getPassword());
         scanInfoRequest.setScanId(codeMetricModel.getCqTaskId());
         return scanInfoRequest;
     }

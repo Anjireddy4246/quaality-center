@@ -12,11 +12,15 @@ public class ReleaseItemModel extends BaseModel {
     private Enums.WorkItemType workItemType;
     private String parentItemId;
     private Enums.Severity severity;
+    private Long projectId;
     private String title;
     private String description;
     private String status;
-    private String releaseNo;
+    private String releaseNumber;
     private String fixedVersion;
     private String affectedVersion;
     private String jsonResponse;
+    private String assignedTo;
+    private String reportedBy;
+    private boolean includeInReleaseNote = true;
 }

@@ -1,15 +1,12 @@
 package com.ts.codemetrics.entity;
-// Generated 31 Jan, 2020 1:28:08 PM by Hibernate Tools 5.1.10.Final
+// Generated 4 Feb, 2020 6:45:49 PM by Hibernate Tools 5.1.10.Final
 
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,11 +19,11 @@ import javax.persistence.TemporalType;
 public class Project implements java.io.Serializable {
 
 	private Long id;
-	private Account account;
 	private String name;
 	private String code;
 	private Integer codeQualityConfigId;
 	private Integer scmconfigId;
+	private Integer accountId;
 	private String cijobName;
 	private Integer rowstatusId;
 	private String createdBy;
@@ -37,14 +34,14 @@ public class Project implements java.io.Serializable {
 	public Project() {
 	}
 
-	public Project(Account account, String name, String code, Integer codeQualityConfigId, Integer scmconfigId,
+	public Project(String name, String code, Integer codeQualityConfigId, Integer scmconfigId, Integer accountId,
 			String cijobName, Integer rowstatusId, String createdBy, Date createdDate, String updatedBy,
 			Date updatedDate) {
-		this.account = account;
 		this.name = name;
 		this.code = code;
 		this.codeQualityConfigId = codeQualityConfigId;
 		this.scmconfigId = scmconfigId;
+		this.accountId = accountId;
 		this.cijobName = cijobName;
 		this.rowstatusId = rowstatusId;
 		this.createdBy = createdBy;
@@ -63,16 +60,6 @@ public class Project implements java.io.Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "AccountId")
-	public Account getAccount() {
-		return this.account;
-	}
-
-	public void setAccount(Account account) {
-		this.account = account;
 	}
 
 	@Column(name = "Name", length = 500)
@@ -109,6 +96,15 @@ public class Project implements java.io.Serializable {
 
 	public void setScmconfigId(Integer scmconfigId) {
 		this.scmconfigId = scmconfigId;
+	}
+
+	@Column(name = "AccountId")
+	public Integer getAccountId() {
+		return this.accountId;
+	}
+
+	public void setAccountId(Integer accountId) {
+		this.accountId = accountId;
 	}
 
 	@Column(name = "CIJobName", length = 100)
