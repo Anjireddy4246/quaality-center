@@ -43,15 +43,16 @@ public class ReleaseItem implements java.io.Serializable {
 	private String updatedBy;
 	private Date updatedDate;
 	private Boolean includeInReleaseNote;
+	private Integer noOfCodeCheckIns;
 
 	public ReleaseItem() {
 	}
 
 	public ReleaseItem(String itemCode, String title, String description, Integer itemType, Long projectId,
-			Integer severity, Integer priority, String status, String affectedVersion, String fixedVersion,
-			String releaseNumber, Date lastSyncedOn, String jsonResponse, String assignedTo, String reportedBy,
-			Integer rowStatusId, String createdBy, Date createdDate, String updatedBy, Date updatedDate,
-			Boolean includeInReleaseNote) {
+					   Integer severity, Integer priority, String status, String affectedVersion, String fixedVersion,
+					   String releaseNumber, Date lastSyncedOn, String jsonResponse, String assignedTo, String reportedBy,
+					   Integer rowStatusId, String createdBy, Date createdDate, String updatedBy, Date updatedDate,
+					   Boolean includeInReleaseNote, Integer noOfCodeCheckIns) {
 		this.itemCode = itemCode;
 		this.title = title;
 		this.description = description;
@@ -73,6 +74,7 @@ public class ReleaseItem implements java.io.Serializable {
 		this.updatedBy = updatedBy;
 		this.updatedDate = updatedDate;
 		this.includeInReleaseNote = includeInReleaseNote;
+		this.noOfCodeCheckIns = noOfCodeCheckIns;
 	}
 
 	@Id
@@ -281,4 +283,12 @@ public class ReleaseItem implements java.io.Serializable {
 		this.includeInReleaseNote = includeInReleaseNote;
 	}
 
+	@Column(name = "NoOfCodeCheckIns")
+	public Integer getNoOfCodeCheckIns() {
+		return this.noOfCodeCheckIns;
+	}
+
+	public void setNoOfCodeCheckIns(Integer noOfCodeCheckIns) {
+		this.noOfCodeCheckIns = noOfCodeCheckIns;
+	}
 }
