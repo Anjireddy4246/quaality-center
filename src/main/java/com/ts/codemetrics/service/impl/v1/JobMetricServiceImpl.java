@@ -112,7 +112,7 @@ public class JobMetricServiceImpl implements JobMetricService {
                 Optional<PMToolConfigModel> pmToolConfigModel =
                         pmToolConfigService.getConfigByProjectCode(codeMetricModel.getJobName());
                 if (pmToolConfigModel.isPresent()) {
-                    PMToolProvider pmToolProvider = pmToolProviderFactory.getProvider(pmToolConfigModel.get().getName());
+                    PMToolProvider pmToolProvider = pmToolProviderFactory.getProvider(pmToolConfigModel.get().getProviderCode());
                     ReleaseItemModel releaseItemModel =
                             pmToolProvider.getIssue(pmToolConfigModel.get(), workItemId);
                     if(Objects.nonNull(releaseItemModel)){

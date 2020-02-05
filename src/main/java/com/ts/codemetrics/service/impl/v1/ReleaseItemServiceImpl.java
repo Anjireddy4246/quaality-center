@@ -2,13 +2,17 @@ package com.ts.codemetrics.service.impl.v1;
 
 import com.ts.codemetrics.entity.ReleaseItem;
 import com.ts.codemetrics.model.v1.ReleaseItemModel;
+import com.ts.codemetrics.model.v1.ValidationModel;
 import com.ts.codemetrics.repository.v1.ReleaseItemRepository;
 import com.ts.codemetrics.service.impl.v1.mapper.ReleaseItemEntityToModel;
 import com.ts.codemetrics.service.impl.v1.mapper.ReleaseItemModelToEntity;
 import com.ts.codemetrics.service.v1.ReleaseItemService;
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,9 +24,22 @@ public class ReleaseItemServiceImpl implements ReleaseItemService {
 
     @Override
     public Optional<ReleaseItemModel> create(ReleaseItemModel releaseItemModel) {
-        Optional<ReleaseItemModel> dbReleaseItemModel = findByWorkItemCode(releaseItemModel.getItemCode());
-        return dbReleaseItemModel.isPresent() ?
-                update(dbReleaseItemModel.get().getId(), releaseItemModel) : save(releaseItemModel);
+        if(Objects.nonNull(releaseItemModel) && StringUtils.isNotBlank(releaseItemModel.getItemCode())){
+            Optional<ReleaseItemModel> dbReleaseItemModel = findByWorkItemCode(releaseItemModel.getItemCode());
+            return dbReleaseItemModel.isPresent() ?
+                    update(dbReleaseItemModel.get().getId(), releaseItemModel) : save(releaseItemModel);
+        }
+        else{
+            releaseItemModel.setSuccess(false);
+            List<ValidationModel> validations = new ArrayList<>();
+            ValidationModel validationModel = new ValidationModel();
+            validationModel.setPropertyName("GlobalValidations - DATA");
+            validationModel.setValidationMessage("Data cannot be empty");
+            validations.add(validationModel);
+            releaseItemModel.setValidations(validations);
+            return Optional.of(releaseItemModel);
+        }
+
     }
 
     @Override

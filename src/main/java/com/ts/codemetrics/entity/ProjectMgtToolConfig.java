@@ -29,6 +29,7 @@ public class ProjectMgtToolConfig implements java.io.Serializable {
 	private String accessToken;
 	private Long projectId;
 	private Integer toolId;
+	private String providerCode;
 	private Integer rowstatusId;
 	private Date createdDate;
 	private String createdBy;
@@ -39,8 +40,8 @@ public class ProjectMgtToolConfig implements java.io.Serializable {
 	}
 
 	public ProjectMgtToolConfig(String name, String url, String loginId, String password, String accessToken,
-			Long projectId, Integer toolId, Integer rowstatusId, Date createdDate, String createdBy, Date updatedDate,
-			String updatedBy) {
+								Long projectId, Integer toolId, String providerCode, Integer rowstatusId, Date createdDate,
+								String createdBy, Date updatedDate, String updatedBy) {
 		this.name = name;
 		this.url = url;
 		this.loginId = loginId;
@@ -48,6 +49,7 @@ public class ProjectMgtToolConfig implements java.io.Serializable {
 		this.accessToken = accessToken;
 		this.projectId = projectId;
 		this.toolId = toolId;
+		this.providerCode = providerCode;
 		this.rowstatusId = rowstatusId;
 		this.createdDate = createdDate;
 		this.createdBy = createdBy;
@@ -157,6 +159,15 @@ public class ProjectMgtToolConfig implements java.io.Serializable {
 
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	@Column(name = "ProviderCode", length = 100)
+	public String getProviderCode() {
+		return this.providerCode;
+	}
+
+	public void setProviderCode(String providerCode) {
+		this.providerCode = providerCode;
 	}
 
 	@UpdateTimestamp

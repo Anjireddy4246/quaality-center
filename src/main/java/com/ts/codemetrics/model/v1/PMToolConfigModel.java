@@ -11,4 +11,5 @@ public class PMToolConfigModel {
     private String password;
     private String accessToken;
     private Long projectId;
+    private String providerCode;
 }

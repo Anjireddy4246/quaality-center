@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ts.codemetrics.model.v1.ReleaseItemModel;
 import com.ts.codemetrics.utils.Enums;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Objects;
 
@@ -34,11 +35,13 @@ public class JiraResponseToModelMapper {
             IssueType issueType = issue.getIssueType();
             User assignee = issue.getAssignee();
             if(Objects.nonNull(assignee)){
-                releaseItemModel.setAssignedTo(assignee.getEmailAddress());
+                releaseItemModel.setAssignedTo(StringUtils.isNotBlank(assignee.getEmailAddress())?
+                        assignee.getEmailAddress(): assignee.getDisplayName());
             }
             User reportedBy = issue.getReporter();
             if(Objects.nonNull(reportedBy)){
-                releaseItemModel.setReportedBy(reportedBy.getEmailAddress());
+                releaseItemModel.setReportedBy(StringUtils.isNotBlank(reportedBy.getEmailAddress())
+                        ? reportedBy.getEmailAddress() : reportedBy.getDisplayName());
             }
             if(Objects.nonNull(issueType)){
                 if(issueType.getName().equalsIgnoreCase("EPIC")){

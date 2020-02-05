@@ -12,5 +12,6 @@ public class CQConfigModel {
     private String accessToken;
     private String authType;
     private Integer accountId;
-    private Integer cqproviderId;
+    private Integer cqProviderId;
+    private String providerCode;
 }

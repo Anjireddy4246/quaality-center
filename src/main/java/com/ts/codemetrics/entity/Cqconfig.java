@@ -24,12 +24,13 @@ public class Cqconfig implements java.io.Serializable {
 	private String authType;
 	private Integer accountId;
 	private Integer cqproviderId;
+	private String providerCode;
 
 	public Cqconfig() {
 	}
 
 	public Cqconfig(String name, String url, String userId, String password, String accessToken, String authType,
-					Integer accountId, Integer cqproviderId) {
+					Integer accountId, Integer cqproviderId, String providerCode) {
 		this.name = name;
 		this.url = url;
 		this.userId = userId;
@@ -38,6 +39,7 @@ public class Cqconfig implements java.io.Serializable {
 		this.authType = authType;
 		this.accountId = accountId;
 		this.cqproviderId = cqproviderId;
+		this.providerCode = providerCode;
 	}
 
 	@Id
@@ -124,4 +126,12 @@ public class Cqconfig implements java.io.Serializable {
 		this.cqproviderId = cqproviderId;
 	}
 
+	@Column(name = "ProviderCode", length = 100)
+	public String getProviderCode() {
+		return this.providerCode;
+	}
+
+	public void setProviderCode(String providerCode) {
+		this.providerCode = providerCode;
+	}
 }
